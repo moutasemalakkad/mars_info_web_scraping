@@ -9,9 +9,8 @@ import os
 app = Flask(__name__)
 
 
-app.config["MONGO_URI"] = os.environ.get('authentication')
-
-mongo = PyMongo(app, uri="mongodb://localhost:27017/scrape_mars.py")
+app.config["MONGO_URI"] = "mongodb://localhost:27017/mars_info"
+mongo = PyMongo(app)
 
 
 
