@@ -2,23 +2,26 @@ from bs4 import BeautifulSoup as soup
 from splinter import Browser
 import pandas as pd 
 import requests 
+import time
 
 
 
 
 
-def init_browser(): 
-    exec_path = {'executable_path': '/Users/moutasemakkad/Downloads/chromedriver'}
+def init_browser():
+    exec_path = {'executable_path': '/usr/local/bin/chromedriver'}
     return Browser('chrome', headless=True, **exec_path)
 
 
 
-mars_info = {}
 
 
 
 
-def scrape_news():
+
+def scrape():
+    mars_info = {}
+
     try:
             #initialize a session
         browser = init_browser()
@@ -42,21 +45,9 @@ def scrape_news():
         mars_info['news_title'] = news_title
         mars_info['news_paragraph'] = news_p
 
-    finally:
-             browser.quit() 
-        
+        time.sleep(3)
 
 
-#scrape_news()
-#print(mars_info)
-
-
-
-
-def scrape_images():
-    try:
-        #initialize a session
-        browser = init_browser()
 
         #visit website
         browser.visit('https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars')
@@ -77,23 +68,10 @@ def scrape_images():
 
         mars_info['image_link'] = featured_image_url
 
-    finally:
-        browser.quit()
 
+        time.sleep(3)
 
-scrape_images()
-print(mars_info)
-
-
-
-
-
-#work on this output changed need to fix
-def weather_scrape():
-    try:
-        #initialize a session
-        browser = init_browser()
-
+     
         #visit website
         browser.visit('https://twitter.com/marswxreport?lang=en')
 
@@ -104,20 +82,13 @@ def weather_scrape():
         soup_weather = soup(html, 'lxml')
 
         # Get the url
-        mars_weather = soup_weather.find("p", class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text.split('.')[0]
+        mars_weather = soup_weather.find("p", class_="TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text
 
         mars_info['weather'] = mars_weather
 
-    finally:
-        browser.quit()
 
+        time.sleep(3)
 
-
-
-def table_scrape():
-    try:
-        #initialize a session
-        browser = init_browser()
 
         #visit website
         browser.visit('https://space-facts.com/mars/')
@@ -135,23 +106,14 @@ def table_scrape():
         # get html raw data
         html_data = df_mars.to_html()
 
+        html_data = html_data.replace("\n", "")
         #push to dictionary
         mars_info['facts'] = html_data
 
+
+        time.sleep(3)
+
         
-
-    finally:
-        browser.quit()
-
-
-
-
-
-def mars_hemp():
-    try:
-        #initialize a session
-        browser = init_browser()
-
         #visit website
         browser.visit('https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars')
 
@@ -213,11 +175,22 @@ def mars_hemp():
         mars_info['hemp'] = dic_list
 
 
+    finally:
+             browser.quit() 
+    
+
+
+    return mars_info
         
 
-    finally:
-        browser.quit()
 
 
-mars_hemp()
-print(mars_info)
+
+
+
+
+
+
+
+
+
