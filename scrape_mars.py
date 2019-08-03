@@ -104,11 +104,14 @@ def scrape():
         df_mars.set_index('Mars - Earth Comparison', inplace=True)
 
         # get html raw data
-        html_data = df_mars.to_html()
+        html_data = df_mars.to_html(index=False)
 
         html_data = html_data.replace("\n", "")
         #push to dictionary
         mars_info['facts'] = html_data
+
+
+       
 
 
         time.sleep(3)
